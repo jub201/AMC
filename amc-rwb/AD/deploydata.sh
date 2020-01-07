@@ -235,11 +235,12 @@ az network nsg create --name $vnet"-data-nsg" --resource-group $mgmtgrp --locati
 
 
 echo "Create Routing Table to Support"
-az network route-table create --resource-group $mgmtgrp  --name rwb-data-udr
+echo "Scratch that, there's a policy preventing us from deploying Route Tables"
+#az network route-table create --resource-group $mgmtgrp  --name rwb-data-udr
 
 
-az network route-table route create --resource-group $mgmtgrp --route-table-name rwb-data-udr -n MDWRoute \
-   --next-hop-type Internet --address-prefix 0.0.0.0/0
+#az network route-table route create --resource-group $mgmtgrp --route-table-name rwb-data-udr -n MDWRoute \
+#   --next-hop-type Internet --address-prefix 0.0.0.0/0
 
 
 echo "Creating New Subnet for Existing Workbench"
