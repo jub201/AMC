@@ -26,7 +26,7 @@ declare brcksize=""
 declare vnet="vnetDataEcosystem"
 declare snet="MHDData"
 
-cd ..
+
 pwd
 pwsh rwb-deploy.ps1 $holname $zone $vnet
 
