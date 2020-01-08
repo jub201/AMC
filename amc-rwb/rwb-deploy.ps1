@@ -5,6 +5,8 @@
 
 $rwbname = $args[0]
 $location = $args[1]
+$mgmtvnet = $args[2]
+$rwbvnetname = "$rwbname-vnet"
 $rwbrg = "$rwbname-rg"
 $rwbmgmtrg = "$rwbname"+ "mgmt-rg"
 
@@ -12,20 +14,29 @@ $rwbmgmtrg = "$rwbname"+ "mgmt-rg"
 #cd $file
 
 # Deploy the foundational VNET for IaaS Workloads
-New-AzResourceGroup -name $rwbmgmtrg -Location $location
+New-AzResourceGroup -name $rwbrg -Location $location -Force
 $vnetparams = @{
-    vnetName = $args[2]
+    vnetName = $rwbvnetname
 }
-$vnetdeploy = New-AzResourceGroupDeployment -TemplateParameterObject $vnetparams -TemplateFile "$HOME\AMC\amc-rwb\0-foundation\rwbvnet.template.json" -ResourceGroupName $rwbmgmtrg
+$rwbvnet = Get-AzVirtualNetwork -ResourceGroupName $rwbrg -Name $vnetparams.vnetName
 
-$vnet = Get-AzVirtualNetwork -ResourceGroupName $rwbmgmtrg -Name $vnetparams.vnetName
+# Check to see if IaaS vNet Exists
+if($rwbvnet -eq $null){
+    Write-Host $vnetname " doesn't Exist, creating..."
+    $vnetdeploy = New-AzResourceGroupDeployment -TemplateParameterObject $vnetparams -TemplateFile "$HOME\AMC\amc-rwb\0-foundation\rwbvnet.template.json" -ResourceGroupName $rwbrg
+    $vnetdeploy
+} else {
+    Write-Host $rwbvnet.name"network already exists"
+}
+
+
 
 # Deploy Resource Group for VNET and Bastion Host
-New-AzResourceGroup -name $rwbmgmtrg -Location $location
+New-AzResourceGroup -name $rwbmgmtrg -Location $location -Force
 # Deploy the Bastion Host for Secured VNET access to all your IaaS resources
 $bastionparams = @{
     location = $location
-    "vnet-name" = $vnet.name
+    "vnet-name" = $mgmtvnet.name
     "vnet-ip-prefix" = "10.175.0.0/21"
     "vnet-new-or-existing" = "existing"
     "bastion-subnet-ip-prefix" = "10.175.1.0/27"
