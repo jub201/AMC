@@ -16,7 +16,7 @@ New-AzResourceGroup -name $rwbmgmtrg -Location $location
 $vnetparams = @{
     vnetName = $args[2]
 }
-$vnetdeploy = New-AzResourceGroupDeployment -TemplateParameterObject $vnetparams -TemplateFile ".\0-foundation\rwbvnet.template.json" -ResourceGroupName $rwbmgmtrg
+$vnetdeploy = New-AzResourceGroupDeployment -TemplateParameterObject $vnetparams -TemplateFile "0-foundation\rwbvnet.template.json" -ResourceGroupName $rwbmgmtrg
 
 $vnet = Get-AzVirtualNetwork -ResourceGroupName $rwbmgmtrg -Name $vnetparams.vnetName
 
