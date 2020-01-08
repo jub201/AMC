@@ -250,7 +250,7 @@ echo "Scratch that, there's a policy preventing us from deploying Route Tables"
 
 
 echo "Creating New Subnet for Existing Workbench"
-az network vnet subnet create --vnet-name $vnet --name $snet --resource-group $mgmtgrp --network-security-group $vnet"-data-nsg" --route-table rwb-data-udr --address-prefix 10.5.3.0/24
+az network vnet subnet create --vnet-name $vnet --name $snet --resource-group $mgmtgrp --network-security-group $vnet"-data-nsg"  --address-prefix 10.5.3.0/24 # --route-table rwb-data-udr #uncomment when policy is lifted
 
 
 #az network vnet subnet update \
