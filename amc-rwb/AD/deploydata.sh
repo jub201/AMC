@@ -5,8 +5,7 @@ IFS=$'\n\t'
 
 #---------------------------------------------------------------
 # mdw_deploy.sh
-# Author: Kellyn Gorman
-# -- Modified for AMC by Joey Brakefield
+# Author: Kellyn Gorman & Joey Brakefield
 # Deploys Modern Data Warehouse Solution via Azure CLI to Azure
 # Scripted- 04/24/2019
 #---------------------------------------------------------------
@@ -14,15 +13,18 @@ IFS=$'\n\t'
 # -o: prevents masked errors
 # IFS: deters from bugs, looping arrays or arguments (e.g. $@)
 #---------------------------------------------------------------
+pwsh
+
 usage() { echo "Usage: $0  -g <groupname> -p <password> -h <holname> -l <zone> -d <data> -b <brcksize>" 1>&2; exit 1; }
-declare groupname="rwb-data"
-declare password="P@ssw0rd12345!"
-declare holname="rwb"
-declare zone=""
+declare groupname="MUSC-data-Hub"
+declare password="MUSCP@ssw0rd12345!"
+declare holname="mhd"
+declare zone="eastus"
 declare data=""
 declare brcksize=""
-declare vnet="rwb-vnet"
-declare snet="rwbdata-subnet"
+# modified for MUSC 1/7/19 - RJB
+declare vnet="vnetDataEcosystem"
+declare snet="MHDData"
 
 # Initialize parameters specified from command line
 while getopts ":g:p:h:l:d:b:" arg; do
@@ -105,7 +107,7 @@ if [[ -z "$holname" ]]; then
 fi
 
 if [[ -z "$zone" ]]; then
-	echo "What will be the Azure location zone to create everything in? Choose from the list below: "
+	echo "What will be the Azure region in which we'll create everything? Choose from the list below: "
 	az account list-locations | grep name | awk  '{print $2}'| tr -d \"\, | grep us | grep -v australia
 	echo "Enter the location name:"
 	read zone
@@ -141,12 +143,12 @@ export spassword=$password"!"
 export myip=$(curl http://ifconfig.me)
 export startip=$myip
 export endip=$myip
-export rwbstartip="10.5.2.0"
-export rwbendip="10.5.2.255"
+export rwbstartip="10.175.5.0"
+export rwbendip="10.175.5.255"
 export logfile=./mdw_deploy.txt
 export adminlogin=sqladmin
 export schema='$schema'
-export mgmtgrp="rwbmgmt-rg"
+export mgmtgrp="$holname""mgmt-rg"
 #export vnet=$servername"_vnet"l
 #export snet=$vnet"_snet"
 export cap=$(cat wh.lst | grep $brcksize" " | awk '{print $4}' | tr -d \"\,)
@@ -338,17 +340,33 @@ if [ $?  == 0 ];
 fi
  
 # Enhancement- find a way to populate the admin value for AAS
-echo "You will be requested for the Azure administrator for the Analysis server: Example-  kegorman@microsoft.com"
+echo "SKIPPING AZURE ANALYSIS SERVICES DEPLOYMENT"
+# echo "You will be requested for the Azure administrator for the Analysis server: Example-  kegorman@microsoft.com"
 
-(
-        set -x
-        az group deployment create --resource-group "$groupname" --template-file "$templateFile2" --parameters "@${parametersFile2}"
-)
+#(
+#        set -x
+#        az group deployment create --resource-group "$groupname" --template-file "$templateFile2" --parameters "@${parametersFile2}"
+#)
 
+#if [ $?  == 0 ];
+# then
+     #   echo "Azure Analysis Server has been successfully deployed"
+#fi
+
+echo "Deploying Azure Data Lake Gen 2 Storage Account"
+az storage account create \
+    --name "$holname""adlssa" \
+    --resource-group $groupname \
+    --location $zone \
+    --sku Standard_LRS \
+    --kind StorageV2 \
+    --enable-hierarchical-namespace true
 if [ $?  == 0 ];
  then
-        echo "Azure Analysis Server has been successfully deployed"
+        echo "Azure Data Lake Gen 2 Storage Account has been successfully deployed"
 fi
+
+
 
 echo "This Completes Part I, the physical resources deployment, Part II will now begin."
 
