@@ -138,17 +138,17 @@ fi
 
 echo "getting IP Address for Azure Cloud Shell for firewall rule"
 export subscriptionID=$(az account show | grep id |awk  '{print $2}'| tr -d \"\,)
-export servername="db"$holname"sql1"
-export adfname="adf"$holname
-export aasname=$holname"aas1"
+export servername=$holname"sql"
+export adfname=$holname"adf"
+export aasname=$holname"as"
 export spassword=$password"!"
 export myip=$(curl http://ifconfig.me)
 export startip=$myip
 export endip=$myip
-export rwbstartip="10.175.5.0"
-export rwbendip="10.175.5.255"
+export rwbstartip="10.175.5.0" # required if deploying compute resources that are accessing the mde"
+export rwbendip="10.175.5.255" # required if deploying compute resources that are accessing the mde"
 export logfile=./mdw_deploy.txt
-export adminlogin=sqladmin
+export adminlogin=azuresqladmin
 export schema='$schema'
 export mgmtgrp="Core-Net-Conn" 
 #export mgmtgrp="$holname""mgmt-rg" # 
@@ -289,15 +289,15 @@ az configure --defaults sql-server=$servername
 az sql db create \
 	--resource-group $groupname \
 	--name AMC_Synthea_Staging \
-        --service-objective S0 \
-        --capacity 10 \
+    --service-objective S0 \
+    --capacity 10 \
 	--zone-redundant false 
 
 # Create a database  for the data warehouse
 # Enhancement-  add dynamic for capacity/sku here, too
 az sql db create \
         --resource-group $groupname \
-        --name AMC_DW \
+        --name mdesqldb02 \
         --service-objective S0 \
         --capacity 10 \
         --zone-redundant false 
