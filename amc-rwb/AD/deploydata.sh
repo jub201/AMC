@@ -28,7 +28,7 @@ declare snet="MHDData"
 
 
 pwd
-pwsh rwb-deploy.ps1 $holname $zone $vnet
+#pwsh rwb-deploy.ps1 $holname $zone $vnet
 
 # Initialize parameters specified from command line
 while getopts ":g:p:h:l:d:b:" arg; do

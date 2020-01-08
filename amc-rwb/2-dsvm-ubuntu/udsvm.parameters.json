@@ -61,13 +61,13 @@
             ]
         },
         "subnetName": {
-            "value": "IaaS-subnet"
+            "value": "IaaSSubnet"
         },
         "virtualNetworkId": {
             "value": "/subscriptions/07d0cb6d-265f-4eff-b07f-cd6d26fbbd59/resourceGroups/rwb-rg/providers/Microsoft.Network/virtualNetworks/rwb-vnet"
         },
         "virtualMachineName": {
-            "value": "dsvm-rwb1"
+            "value": "dsvmrwb1"
         },
         "virtualMachineRG": {
             "value": "rwb-rg"
