@@ -152,7 +152,7 @@ export rwbendip="10.175.5.255"
 export logfile=./mdw_deploy.txt
 export adminlogin=sqladmin
 export schema='$schema'
-export mgmtgrp="Core-Net-Conn"
+export mgmtgrp="Core-Net-Conn" 
 #export mgmtgrp="$holname""mgmt-rg" # 
 #export vnet=$servername"_vnet"l
 #export snet=$vnet"_snet"
@@ -250,8 +250,8 @@ echo "Scratch that, there's a policy preventing us from deploying Route Tables"
 #   --next-hop-type Internet --address-prefix 0.0.0.0/0
 
 
-echo "Creating New Subnet for Existing Workbench"
-az network vnet subnet create --vnet-name $vnet --name $snet --resource-group $mgmtgrp --network-security-group $vnet"-data-nsg"  --address-prefix 10.5.3.0/24 # --route-table rwb-data-udr #uncomment when policy is lifted
+echo "Creating New Subnet for Existing Workbench...nevermind, policy violation" 
+# az network vnet subnet create --vnet-name $vnet --name $snet --resource-group $mgmtgrp --network-security-group $vnet"-data-nsg"  --address-prefix 10.5.3.0/24 # --route-table rwb-data-udr #uncomment when policy is lifted
 
 
 #az network vnet subnet update \
