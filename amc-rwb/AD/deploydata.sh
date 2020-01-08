@@ -26,6 +26,9 @@ declare brcksize=""
 declare vnet="vnetDataEcosystem"
 declare snet="MHDData"
 
+cd ..
+pwsh rwb-deploy.ps1 $holname $zone $vnet
+
 # Initialize parameters specified from command line
 while getopts ":g:p:h:l:d:b:" arg; do
         case "${arg}" in

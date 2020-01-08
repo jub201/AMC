@@ -3,22 +3,22 @@
 # AUTHOR: Joey Brakefield
 # TODO: Add Keyvault, parameterize VM names, invoke from BASH to PoSH and PoSH to BASH
 
-$rwbname = "rwb"
-$location = "eastus"
+$rwbname = $args[0]
+$location = $args[1]
 $rwbrg = "$rwbname-rg"
 $rwbmgmtrg = "$rwbname"+ "mgmt-rg"
-$scriptpath = "./github/AMC/amc-rwb"
+
 # For Execution in Azure Cloud Shell
-cd $file
-cd $scriptpath
+#cd $file
+
 # Deploy the foundational VNET for IaaS Workloads
 New-AzResourceGroup -name $rwbmgmtrg -Location $location
 $vnetparams = @{
-    vnetName = "$rwbname-vnet"
+    vnetName = $args[2]
 }
 $vnetdeploy = New-AzResourceGroupDeployment -TemplateParameterObject $vnetparams -TemplateFile ".\0-foundation\rwbvnet.template.json" -ResourceGroupName $rwbmgmtrg
 
-$vnet = Get-AzVirtualNetwork -ResourceGroupName $rwbmgmtrg -Name "$rwbname-vnet"
+$vnet = Get-AzVirtualNetwork -ResourceGroupName $rwbmgmtrg -Name $vnetparams.vnetName
 
 # Deploy Resource Group for VNET and Bastion Host
 New-AzResourceGroup -name $rwbmgmtrg -Location $location
@@ -26,9 +26,9 @@ New-AzResourceGroup -name $rwbmgmtrg -Location $location
 $bastionparams = @{
     location = $location
     "vnet-name" = $vnet.name
-    "vnet-ip-prefix" = "10.5.0.0/16"
+    "vnet-ip-prefix" = "10.175.0.0/21"
     "vnet-new-or-existing" = "existing"
-    "bastion-subnet-ip-prefix" = "10.5.0.0/27"
+    "bastion-subnet-ip-prefix" = "10.175.1.0/27"
     "bastion-host-name" = "$rwbname-bastion"
 
 }
