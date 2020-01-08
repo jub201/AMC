@@ -44,22 +44,22 @@ New-AzResourceGroup -name $rwbrg -Location $location
 # First let's deploy a secure Ubuntu Data Science VM
 ## Let's replace the VNET ID with the one you deployed above
 $vnet = Get-AzVirtualNetwork -ResourceGroupName $rwbmgmtrg -Name "$rwbname-vnet"
-$udsvmpfilepath = ".\2-dsvm-ubuntu\udsvm.parameters.json"
+$udsvmpfilepath = "$HOME\AMC\amc-rwb\2-dsvm-ubuntu\udsvm.parameters.json"
 $udsvmparams = Get-Content -Path $udsvmpfilepath -Raw | ConvertFrom-Json
 $udsvmparams.parameters.virtualNetworkId = @{value=$vnet.id}  
-$udsvmparams | ConvertTo-Json -Depth 100 | ForEach-Object { [System.Text.RegularExpressions.Regex]::Unescape($_) } | Set-Content -Path '.\custom-udsvm.parameters.json'
+$udsvmparams | ConvertTo-Json -Depth 100 | ForEach-Object { [System.Text.RegularExpressions.Regex]::Unescape($_) } | Set-Content -Path '$HOME\AMC\amc-rwb\custom-udsvm.parameters.json'
 
 
 ## Now deploy the Ubuntu DSVM to Azure
-New-AzResourceGroupDeployment -TemplateFile ".\2-dsvm-ubuntu\udsvm.template.json" -ResourceGroupName $rwbrg -TemplateParameterFile '.\custom-udsvm.parameters.json' -location $location 
+New-AzResourceGroupDeployment -TemplateFile "$HOME\AMC\amc-rwb\2-dsvm-ubuntu\udsvm.template.json" -ResourceGroupName $rwbrg -TemplateParameterFile '$HOME\AMC\amc-rwb\custom-udsvm.parameters.json' -location $location 
 
 ## Deploy a Windows DSVM to Azure
 ## Let's replace the VNET ID with the one you deployed above
 $vnet = Get-AzVirtualNetwork -ResourceGroupName $rwbmgmtrg -Name "$rwbname-vnet"
-$wdsvmpfilepath = ".\4-dsvm-win\wdsvm.parameters.json"
+$wdsvmpfilepath = "$HOME\AMC\amc-rwb\4-dsvm-win\wdsvm.parameters.json"
 $wdsvmparams = Get-Content -Path $wdsvmpfilepath -Raw | ConvertFrom-Json
 $wdsvmparams.parameters.virtualNetworkId = @{value=$vnet.id}  
-$wdsvmparams | ConvertTo-Json -Depth 100 | ForEach-Object { [System.Text.RegularExpressions.Regex]::Unescape($_) } | Set-Content -Path '.\custom-wdsvm.parameters.json'
+$wdsvmparams | ConvertTo-Json -Depth 100 | ForEach-Object { [System.Text.RegularExpressions.Regex]::Unescape($_) } | Set-Content -Path '$HOME\AMC\amc-rwb\custom-wdsvm.parameters.json'
 
 ## Now deploy the Ubuntu DSVM to Azure
-New-AzResourceGroupDeployment -TemplateFile ".\4-dsvm-win\wdsvm.template.json" -ResourceGroupName $rwbrg -TemplateParameterFile '.\custom-wdsvm.parameters.json' -location $location 
+New-AzResourceGroupDeployment -TemplateFile "$HOME\AMC\amc-rwb\4-dsvm-win\wdsvm.template.json" -ResourceGroupName $rwbrg -TemplateParameterFile '$HOME\AMC\amc-rwb\custom-wdsvm.parameters.json' -location $location 
