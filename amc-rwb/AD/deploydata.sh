@@ -13,7 +13,7 @@ IFS=$'\n\t'
 # -o: prevents masked errors
 # IFS: deters from bugs, looping arrays or arguments (e.g. $@)
 #---------------------------------------------------------------
-pwsh
+
 
 usage() { echo "Usage: $0  -g <groupname> -p <password> -h <holname> -l <zone> -d <data> -b <brcksize>" 1>&2; exit 1; }
 declare groupname="MUSC-data-Hub"
