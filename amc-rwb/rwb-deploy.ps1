@@ -16,7 +16,7 @@ New-AzResourceGroup -name $rwbmgmtrg -Location $location
 $vnetparams = @{
     vnetName = $args[2]
 }
-$vnetdeploy = New-AzResourceGroupDeployment -TemplateParameterObject $vnetparams -TemplateFile "0-foundation\rwbvnet.template.json" -ResourceGroupName $rwbmgmtrg
+$vnetdeploy = New-AzResourceGroupDeployment -TemplateParameterObject $vnetparams -TemplateFile "$HOME\AMC\amc-rwb\0-foundation\rwbvnet.template.json" -ResourceGroupName $rwbmgmtrg
 
 $vnet = Get-AzVirtualNetwork -ResourceGroupName $rwbmgmtrg -Name $vnetparams.vnetName
 
@@ -32,7 +32,7 @@ $bastionparams = @{
     "bastion-host-name" = "$rwbname-bastion"
 
 }
-New-AzResourceGroupDeployment -TemplateFile ".\1-azbastionbroker\bastiondeploy.json" -ResourceGroupName $rwbmgmtrg -TemplateParameterObject $bastionparams -location $location 
+New-AzResourceGroupDeployment -TemplateFile "$HOME\AMC\amc-rwb\1-azbastionbroker\bastiondeploy.json" -ResourceGroupName $rwbmgmtrg -TemplateParameterObject $bastionparams -location $location 
 
 
 
