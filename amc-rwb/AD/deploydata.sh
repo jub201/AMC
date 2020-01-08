@@ -288,7 +288,7 @@ az configure --defaults sql-server=$servername
 # Enhancement-  add dyanmice for capacity/sku here, too.
 az sql db create \
 	--resource-group $groupname \
-	--name AMC_Synthea_Staging \
+	--name mdesqldb01 \
     --service-objective S0 \
     --capacity 10 \
 	--zone-redundant false 
@@ -305,7 +305,7 @@ az sql db create \
 # Create Azure SQL Warehouse    
 az sql db create \
     --resource-group $groupname \
-    --name AzureDW \
+    --name mdedw \
     --edition DataWarehouse \
     --service-objective $brcksize \
     --collation SQL_Latin1_General_CP1_CI_AS \
