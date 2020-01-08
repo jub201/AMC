@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "rwbaas1"
+            "value": "mdeas"
         },
         "location": {
             "value": "eastus"
         },
         "sku": {
-            "value": "B1"
+            "value": "S2"
         },
         "backupBlobContainerUri": {
             "value": ""

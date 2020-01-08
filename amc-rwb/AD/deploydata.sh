@@ -16,19 +16,17 @@ IFS=$'\n\t'
 
 
 usage() { echo "Usage: $0  -g <groupname> -p <password> -h <holname> -l <zone> -d <data> -b <brcksize>" 1>&2; exit 1; }
-declare groupname="MUSC-data-Hub"
+declare groupname="mde-rg"
 declare password="MUSCP@ssw0rd12345!"
-declare holname="mhd"
+declare holname="mde" # this is the prefix
 declare zone="eastus"
-declare data=""
-declare brcksize=""
+declare data="" # populate with sample data prompt below
+declare brcksize="DW100c" # Azure DW (aka synapse) sizing 
 # modified for MUSC 1/7/19 - RJB
-declare vnet="vnetDataEcosystem"
-declare snet="MHDData"
+declare vnet="vnetDataEcosystem" # only needed for the Research Workbench or other artifacts that require IP addresses
+declare snet="MHDData" # only needed for the Research Workbench or other artifacts that require IP addresses
 
-
-pwd
-#pwsh rwb-deploy.ps1 $holname $zone $vnet
+# pwsh rwb-deploy.ps1 $holname $zone $vnet # this is to invoke the deployment of the research workbench
 
 # Initialize parameters specified from command line
 while getopts ":g:p:h:l:d:b:" arg; do
@@ -215,7 +213,7 @@ EOF
 #mv ./hied_data/* .
 
 
-unzip SyntheaData.zip  
+unzip -o SyntheaData.zip  
 
 
 
