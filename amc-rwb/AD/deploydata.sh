@@ -343,18 +343,18 @@ if [ $?  == 0 ];
 fi
  
 # Enhancement- find a way to populate the admin value for AAS
-echo "SKIPPING AZURE ANALYSIS SERVICES DEPLOYMENT"
+#echo "SKIPPING AZURE ANALYSIS SERVICES DEPLOYMENT"
 # echo "You will be requested for the Azure administrator for the Analysis server: Example-  kegorman@microsoft.com"
 
-#(
-#        set -x
-#        az group deployment create --resource-group "$groupname" --template-file "$templateFile2" --parameters "@${parametersFile2}"
-#)
+(
+        set -x
+        az group deployment create --resource-group "$groupname" --template-file "$templateFile2" --parameters "@${parametersFile2}"
+)
 
-#if [ $?  == 0 ];
-# then
-     #   echo "Azure Analysis Server has been successfully deployed"
-#fi
+if [ $?  == 0 ];
+ then
+        echo "Azure Analysis Server has been successfully deployed"
+fi
 
 echo "Deploying Azure Data Lake Gen 2 Storage Account"
 az storage account create \
